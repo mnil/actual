@@ -172,8 +172,24 @@ export function GetCardData({
     firstDayOfWeekIdx,
     budgetType,
   ]);
-  const graphData = useReport('default' + report.name, getGraphData);
-  const groupedData = useReport('grouped' + report.name, getGroupData);
+  const graphData = useReport('default' + report.name, getGraphData, [
+    report,
+    categories,
+    payees,
+    accounts,
+    startDate,
+    endDate,
+    firstDayOfWeekIdx,
+    budgetType,
+  ]);
+  const groupedData = useReport('grouped' + report.name, getGroupData, [
+    report,
+    categories,
+    startDate,
+    endDate,
+    firstDayOfWeekIdx,
+    budgetType,
+  ]);
 
   const data =
     graphData && groupedData ? { ...graphData, groupedData } : graphData;

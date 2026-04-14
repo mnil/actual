@@ -149,7 +149,17 @@ function NetWorthInner({ widget }: NetWorthInnerProps) {
       format,
     ],
   );
-  const data = useReport('net_worth', reportParams);
+  const data = useReport('net_worth', reportParams, [
+    start,
+    end,
+    accounts,
+    conditions,
+    conditionsOp,
+    locale,
+    interval,
+    firstDayOfWeekIdx,
+    format,
+  ]);
   useEffect(() => {
     async function run() {
       const earliestTransaction = await send('get-earliest-transaction');

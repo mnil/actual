@@ -34,6 +34,9 @@ const invalidateQueries = (queryClient: QueryClient, queryKey?: QueryKey) => {
   void queryClient.invalidateQueries({
     queryKey: queryKey ?? accountQueries.lists(),
   });
+  void queryClient.invalidateQueries({
+    queryKey: ['report'],
+  });
 };
 
 const dispatchErrorNotification = (

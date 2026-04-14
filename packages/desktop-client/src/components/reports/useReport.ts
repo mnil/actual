@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 import { useSpreadsheet } from '#hooks/useSpreadsheet';
 
@@ -7,27 +7,26 @@ export function useReport<T>(
   getData: (
     spreadsheet: ReturnType<typeof useSpreadsheet>,
     setData: (results: T) => void,
-  ) => Promise<void>,
+  ) => Promise<void> | void,
+  queryKey?: unknown[],
 ): T | null {
   const spreadsheet = useSpreadsheet();
-  const [results, setResults] = useState<T | null>(null);
 
-  useEffect(() => {
-    let didCancel = false;
+  const { data } = useQuery({
+    queryKey: queryKey ? ['report', sheetName, ...queryKey] : ['report', sheetName],
+    queryFn: () => {
+      return new Promise<T>((resolve, reject) => {
+        try {
+          const result = getData(spreadsheet, resolve);
+          if (result instanceof Promise) {
+            result.catch(reject);
+          }
+        } catch (e) {
+          reject(e);
+        }
+      });
+    },
+  });
 
-    // Reset results whenever a new data function is provided so callers
-    // can reliably show a loading state instead of stale/partial data.
-    setResults(null);
-
-    void getData(spreadsheet, results => {
-      if (!didCancel) {
-        setResults(results);
-      }
-    });
-
-    return () => {
-      didCancel = true;
-    };
-  }, [getData, spreadsheet]);
-  return results;
+  return data ?? null;
 }

@@ -238,7 +238,14 @@ function CalendarInner({ widget, parameters }: CalendarInnerProps) {
     scrollbarContainer,
   ) as Ref<HTMLDivElement>;
 
-  const data = useReport('calendar', params);
+  const data = useReport('calendar', params, [
+    start,
+    end,
+    conditions,
+    conditionsOp,
+    firstDayOfWeekIdx,
+    dirty,
+  ]);
 
   const [allMonths, setAllMonths] = useState<
     Array<{

@@ -119,7 +119,7 @@ function CashFlowInner({ widget }: CashFlowInnerProps) {
       ),
     [start, end, isConcise, conditions, conditionsOp, locale, format],
   );
-  const data = useReport('cash_flow', params);
+  const data = useReport('cash_flow', params, [start, end, isConcise, conditions, conditionsOp, locale, format]);
 
   useEffect(() => {
     async function run() {

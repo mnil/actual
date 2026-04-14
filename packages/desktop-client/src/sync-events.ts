@@ -2,6 +2,7 @@ import { listen, send } from '@actual-app/core/platform/client/connection';
 import type { QueryClient } from '@tanstack/react-query';
 import { t } from 'i18next';
 
+import { reportQueries } from '#reports';
 import { accountQueries } from './accounts';
 import { resetSync, sync } from './app/appSlice';
 import { categoryQueries } from './budget';
@@ -88,6 +89,20 @@ export function listenForSyncEvent(store: AppStore, queryClient: QueryClient) {
       if (tables.includes('accounts')) {
         void queryClient.invalidateQueries({
           queryKey: accountQueries.lists(),
+        });
+      }
+
+      if (
+        tables.includes('transactions') ||
+        tables.includes('categories') ||
+        tables.includes('category_groups') ||
+        tables.includes('category_mapping') ||
+        tables.includes('accounts') ||
+        tables.includes('payees') ||
+        tables.includes('payee_mapping')
+      ) {
+        void queryClient.invalidateQueries({
+          queryKey: ['report'],
         });
       }
     } else if (event.type === 'error') {

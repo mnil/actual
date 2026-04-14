@@ -104,7 +104,17 @@ export function NetWorthCard({
       format,
     ],
   );
-  const data = useReport('net_worth', params);
+  const data = useReport('net_worth', params, [
+    start,
+    end,
+    accounts,
+    meta?.conditions,
+    meta?.conditionsOp,
+    locale,
+    meta?.interval,
+    firstDayOfWeekIdx,
+    format,
+  ]);
 
   return (
     <ReportCard

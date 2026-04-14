@@ -331,7 +331,16 @@ function SankeyInner({ widget }: SankeyInnerProps) {
     setData: (data: SankeyData) => void,
   ) => setData({ nodes: [], links: [] });
 
-  const data = useReport('sankey', reportParams ?? defaultGetData);
+  const data = useReport('sankey', reportParams ?? defaultGetData, [
+    start,
+    end,
+    groupedCategories,
+    conditions,
+    conditionsOp,
+    graphMode,
+    topNcategories,
+    categorySort,
+  ]);
 
   useEffect(() => {
     async function run() {
